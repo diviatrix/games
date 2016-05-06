@@ -36,8 +36,9 @@ public class Logic : MonoBehaviour {
     public List<Image> Dispute1 = new List<Image>();
     public List<Image> Dispute2 = new List<Image>();
 
-    //float nextTime;
-    //float Timer = 0.01f;
+    float nextTime;
+    float Timer = 1;
+    bool AutoStep;
 
     public List<PlayingCard> p1d = new List<PlayingCard>();
     public List<PlayingCard> p2d = new List<PlayingCard>();
@@ -46,17 +47,20 @@ public class Logic : MonoBehaviour {
 
     public void Start()
     {
-        // Проверка аттачей в редакторе
         CheckAllShit();
-
-        // формирование колоды, перетасовка, раздача
-        FillDeck();
-        RandomizeDeck();
-        SplitDeck();
-        //nextTime = Time.timeSinceLevelLoad + Timer;
+        FormDeck();
         RemoveDisputeDisplay();
         ShowCard();
     }
+
+    // Form new deck, shuffle and give to hands
+    void FormDeck()
+    {
+        FillDeck();
+        RandomizeDeck();
+        SplitDeck();
+    }
+    // Shows list of cards in deck
     void DebugDeck(List<PlayingCard> deck)
     {
         Debug.Log("-------------------------------");
@@ -68,26 +72,14 @@ public class Logic : MonoBehaviour {
         }
         Debug.Log("-------------------------------");
     }
-    public void Dbgdeck1()
-    {
-        DebugDeck(p1d);
-    }
-    public void Dbgdeck2()
-    {
-        DebugDeck(p2d);
-    }
-    public void Dbgtbl1()
-    {
-        DebugDeck(p1t);
-    }
-    public void Dbgtbl2()
-    {
-        DebugDeck(p2t);
-    }
+
+    // Adds card to deck. Changes original deck. 
     public void AddCardToDeck( List<PlayingCard> deck, PlayingCard card)
     {
         deck.Add(card);
     }
+
+    // put 1 card from each hand to table. Parameter skips check for empty table (usds for dispute).
     public void PutCardsToTable(bool ignoreTable)
     {
         if (ignoreTable == false)
@@ -121,6 +113,8 @@ public class Logic : MonoBehaviour {
         // update visual
         ShowCard();
     }
+
+    // Grab all cards from table to chosen deck. Yes it changes desired deck.
     public void GrabCardsFromTableTo(List<PlayingCard> deck)
     {
         List<PlayingCard> newdeck = DeckCombiner(p1t, p2t);
@@ -129,12 +123,16 @@ public class Logic : MonoBehaviour {
 
         CleanTable();
     }
+
+    // cleanup table cards
     void CleanTable()
     {
         p1t = new List<PlayingCard>();
         p2t = new List<PlayingCard>();
         RemoveDisputeDisplay();
     }
+
+    // combines two decks and return new one. Doesnt change originals.
     public List<PlayingCard> DeckCombiner( List<PlayingCard> deck,  List<PlayingCard> deck2)
     {
         List<PlayingCard> newdeck = new List<PlayingCard>();
@@ -149,15 +147,18 @@ public class Logic : MonoBehaviour {
 
         return newdeck;
     }    
+
+    // Cards fight logic
     public void CardFight()
     {
         if (TableIsEmpty())
             return;
 
+        // new vars for top cards on table
         PlayingCard player1LastTableCard = p1t[p1t.Count - 1];
         PlayingCard player2LastTableCard = p2t[p2t.Count - 1];
 
-        
+        // 6 vs ace logic
         if ((player1LastTableCard.name == "6" && player2LastTableCard.name == "ace"))
         {
             Debug.Log("6 vs ace!");
@@ -168,20 +169,28 @@ public class Logic : MonoBehaviour {
             Debug.Log("6 vs ace!");
             Player2Win();
         }
+
+        // power compare logic 
         else if (player1LastTableCard.power > player2LastTableCard.power)
         {
             Player1Win();
-        }
-        else if (player1LastTableCard.power == player2LastTableCard.power)
-        {
-            HandleDispute();
         }
         else if (player1LastTableCard.power < player2LastTableCard.power)
         {
             Player2Win();
         }
+
+        // Dispute
+        else if (player1LastTableCard.power == player2LastTableCard.power)
+        {
+            HandleDispute();
+        }
+
+        // update visuals
         ShowCard();
     }
+
+    // Check if table is empty
     bool TableIsEmpty()
     {
         if (p1t.Count > 0 && p2t.Count > 0)
@@ -191,6 +200,8 @@ public class Logic : MonoBehaviour {
         else return true;
 
     }
+
+    // Update visuals on table
     void ShowCard()
     {
         // set card count text
@@ -228,7 +239,7 @@ public class Logic : MonoBehaviour {
         player2TableCardImage.sprite = player2LastTableCard.image;
     }    
 
-    // show dispute if any player has only 1 card 
+    // show image of dipsute if any player has only 1 card 
     void Dispute1Display()
     {
         foreach(Image img in Dispute1)
@@ -260,6 +271,7 @@ public class Logic : MonoBehaviour {
         }
     }
 
+    // Dispute logic
     void HandleDispute()
     {
         Dispute = true;
@@ -283,6 +295,8 @@ public class Logic : MonoBehaviour {
             PutCardsToTable(true);
         }
     }    
+
+    // Win round logic for grabbing cards
     void Player1Win()
     {
         //Debug.Log("Player 1 Won round!");
@@ -293,6 +307,8 @@ public class Logic : MonoBehaviour {
         //Debug.Log("Player 2 Won round!");
         GrabCardsFromTableTo(p2d);
     }
+
+    // Pick color for cardname text
     public Color PickColor(string type)
     {
         Color newCol = Color.black;
@@ -303,6 +319,8 @@ public class Logic : MonoBehaviour {
 
         return newCol;
     }
+
+    // Checks, who win. Called in the game end
     void CheckWinner()
     {
         if (p1d.Count == 0)
@@ -322,10 +340,13 @@ public class Logic : MonoBehaviour {
         CleanTable();
         ShowCard();
 
+        if (AutoFight)
+            SwitchAutoFight();
+
         engGamePanel.SetActive(true);
     }
-
-  /*
+    
+    // Enable AutoFight
     public void SwitchAutoFight()
     {
         if (AutoFight)
@@ -337,22 +358,29 @@ public class Logic : MonoBehaviour {
             AutoFight = true;
         }
         
-    }
-    // Use this for initialization
-	
-
+    }    
+    
     // Update is called once per frame
 	void Update () {
         if (AutoFight)
         {
             if (nextTime <= Time.timeSinceLevelLoad)
             {
-                MakeMove();
+                if (AutoStep)
+                {
+                    PutCardsToTable(false);
+                    AutoStep = false;
+                } else
+                {
+                    CardFight();
+                    AutoStep = true;
+                }
                 nextTime = Time.timeSinceLevelLoad + Timer;
             }
         }       
 	}
-    */
+    
+    // Check editor attaches
     void CheckAllShit()
     {
         if ((player1TableCardName == null) || (player2TableCardName == null) || (player1CardCount == null) || (player2CardCount == null) || (player1TableCardImage == null) || (player2TableCardImage == null))
@@ -360,6 +388,8 @@ public class Logic : MonoBehaviour {
             Debug.LogError("SOMETHING IS NOT SET IN EDITOR!!!");
         }
     }
+    
+    // Deck prepare
     void FillDeck()
     {
         int i = 0;
