@@ -20,7 +20,7 @@ public class PlayingCard
 
 public class Logic : MonoBehaviour {
     
-    int power = 6;
+    int power = 10;
     
     string[] cards = new string[] {"6","7","8","9","10","junior","queen","king","ace"};
     string[] formats = new string[] {"heart", "diamond", "cross", "spade"};
