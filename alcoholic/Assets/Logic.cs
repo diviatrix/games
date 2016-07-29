@@ -37,7 +37,7 @@ public class Logic : MonoBehaviour {
     public List<Image> Dispute2 = new List<Image>();
 
     float nextTime;
-    float Timer = 1;
+    float Timer = 0.1f;
     bool AutoStep;
 
     public List<PlayingCard> p1d = new List<PlayingCard>();
@@ -45,7 +45,7 @@ public class Logic : MonoBehaviour {
     public List<PlayingCard> p1t = new List<PlayingCard>();
     public List<PlayingCard> p2t = new List<PlayingCard>();
 
-    public void Start()
+    public void GameStart()
     {
         CheckAllShit();
         FormDeck();
