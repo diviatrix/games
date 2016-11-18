@@ -35,79 +35,24 @@ public class mobObject : MonoBehaviour {
 
     void CreateMobParts()
     {
-        CreateBody();
-        CreateHead();
-        CreateLeftHand();
-        CreateRightHand();
-        CreateLeftLeg();
-        CreateRightLeg();
-        CreateWeapon();
+        CreateBodyPart(bodySprite,"_body");
+        CreateBodyPart(headSprite, "_head");
+        CreateBodyPart(lhandSprite, "_left_hand"); ;
+        CreateBodyPart(rhandSprite, "_righ_hand");
+        CreateBodyPart(llegSprite, "_left_leg");
+        CreateBodyPart(rlegSprite, "_right_leg");
+        CreateBodyPart(weaponSprite, "_weapon");
     }
 
-    void CreateHead()
-    {
+    
 
-    }
-    void CreateBody()
+    void CreateBodyPart(Sprite spr, string str)
     {
-        GameObject body = new GameObject();
-        body.name = transform.name + "_body";
-        body.transform.SetParent(this.transform);
-        SpriteRenderer bodyRenderer = body.AddComponent<SpriteRenderer>();
-        bodyRenderer.sprite = bodySprite;
-        body.transform.localScale += new Vector3(20, 20, 0);
-        Debug.Log(body);
-
-    }
-    void CreateLeftHand()
-    {
-        GameObject body = new GameObject();
-        body.name = transform.name + "_left_hand";
-        body.transform.SetParent(this.transform);
-        SpriteRenderer bodyRenderer = body.AddComponent<SpriteRenderer>();
-        bodyRenderer.sprite = bodySprite;
-        body.transform.localScale += new Vector3(20, 20, 0);
-        Debug.Log(body);
-    }
-    void CreateRightHand()
-    {
-        GameObject body = new GameObject();
-        body.name = transform.name + "_body";
-        body.transform.SetParent(this.transform);
-        SpriteRenderer bodyRenderer = body.AddComponent<SpriteRenderer>();
-        bodyRenderer.sprite = bodySprite;
-        body.transform.localScale += new Vector3(20, 20, 0);
-        Debug.Log(body);
-    }
-    void CreateLeftLeg()
-    {
-        GameObject body = new GameObject();
-        body.name = transform.name + "_body";
-        body.transform.SetParent(this.transform);
-        SpriteRenderer bodyRenderer = body.AddComponent<SpriteRenderer>();
-        bodyRenderer.sprite = bodySprite;
-        body.transform.localScale += new Vector3(20, 20, 0);
-        Debug.Log(body);
-    }
-    void CreateRightLeg()
-    {
-        GameObject body = new GameObject();
-        body.name = transform.name + "_body";
-        body.transform.SetParent(this.transform);
-        SpriteRenderer bodyRenderer = body.AddComponent<SpriteRenderer>();
-        bodyRenderer.sprite = bodySprite;
-        body.transform.localScale += new Vector3(20, 20, 0);
-        Debug.Log(body);
-    }
-    void CreateWeapon()
-    {
-        GameObject body = new GameObject();
-        body.name = transform.name + "_body";
-        body.transform.SetParent(this.transform);
-        SpriteRenderer bodyRenderer = body.AddComponent<SpriteRenderer>();
-        bodyRenderer.sprite = bodySprite;
-        body.transform.localScale += new Vector3(20, 20, 0);
-        Debug.Log(body);
-    }
-
+        GameObject go = new GameObject();
+        go.transform.localScale += new Vector3(20, 20, 0);
+        go.transform.SetParent(this.transform);
+        SpriteRenderer goRenderer = go.AddComponent<SpriteRenderer>();
+        goRenderer.sprite = spr;
+        go.name = transform.name + str;
+    }    
 }
