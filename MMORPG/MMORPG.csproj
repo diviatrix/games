@@ -79,6 +79,7 @@
     <Compile Include="Assets\ProjectAssets\Scripts\PlayerControl.cs" />
     <Compile Include="Assets\ProjectAssets\Scripts\Utility\Map.cs" />
     <Compile Include="Assets\ProjectAssets\Scripts\Utility\Tile.cs" />
+    <Compile Include="Assets\ProjectAssets\Scripts\Utility\TileList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Maps\test.txt" />

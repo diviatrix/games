@@ -10,6 +10,7 @@ public class LoadLevel : MonoBehaviour {
 
     public Tile[,] map = new Tile[16, 16];
 
+
     public int[,] hMap =
     {
         { 0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0},
