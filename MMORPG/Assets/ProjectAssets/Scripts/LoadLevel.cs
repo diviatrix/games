@@ -39,45 +39,46 @@ public class LoadLevel : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
-        generate_map();
-        draw_map();
-        LoadJson();
+    //void Start () {
+    //    generate_map();
+    //    draw_map();
+    //    LoadJson();
 
-    }
+    //}
 	
-    // draw images according to array
-    void draw_map()
-    {
-        foreach (Tile b in map)
-        {
-            GameObject myTile = Instantiate(b.prefab, new Vector3(b.x, -b.y, 0), Quaternion.identity) as GameObject;
-            myTile.name = b.type.ToString();
-        }
-    }
+    //// draw images according to array
+    //void draw_map()
+    //{
+    //    foreach (Tile b in map)
+    //    {
+    //        GameObject myTile = Instantiate(b.prefab, new Vector3(b.x, -b.y, 0), Quaternion.identity) as GameObject;
+    //        myTile.name = b.type.ToString();
+    //    }
+        
+    //}
 
     // generate map object with tiles from 2D array win ints
-    void generate_map()
-    {
-        for (int y = 0; y <= 15; y++)
-        {
-            for (int x = 0; x <= 15; x++)
-            {
-                Tile myTile = generate_Tile_from_hmap(hMap[x, y], y , x);
-                map[x, y] = myTile;                
-            }
-        }
-    }
+    //void generate_map()
+    //{
+    //    for (int y = 0; y <= 15; y++)
+    //    {
+    //        for (int x = 0; x <= 15; x++)
+    //        {
+    //            Tile myTile = generate_Tile_from_hmap(hMap[x, y], y , x);
+    //            map[x, y] = myTile;                
+    //        }
+    //    }
+    //}
 
-    Tile generate_Tile_from_hmap(int number, int x, int y)
-    {
-        Tile myTile = new Tile();
-        myTile = new Tile { prefab = map_Tiles[number], x = x, y = y, type = (Tile.tileType)number };
+    //Tile generate_Tile_from_hmap(int number, int x, int y)
+    //{
+    //    Tile myTile = new Tile();
+    //    myTile = new Tile { prefab = map_Tiles[number], x = x, y = y, type = (Tile.tileType)number };
         
 
 
-        return myTile;
-    }
+    //    return myTile;
+    //}
 	// Update is called once per frame
 	void Update () {
 	

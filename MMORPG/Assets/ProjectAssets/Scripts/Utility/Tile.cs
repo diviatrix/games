@@ -2,16 +2,20 @@
 using System.Collections;
 
 public class Tile : MonoBehaviour
-{
-    public enum tileType
+{    
+    public bool isWalkable;
+    public bool isTrigger;
+    public bool isVisible;
+    
+
+    private void Start()
     {
-        Empty,
-        Floor,
-        Wall,
-        Grass
+        // set collider
+        this.GetComponent<Collider2D>().enabled = (isWalkable && isTrigger) || (!isWalkable);
+        this.GetComponent<Collider2D>().isTrigger = isTrigger && isWalkable;
+        // set render
+        this.GetComponent<SpriteRenderer>().enabled = isVisible;
+        // set trigger
     }
-    public GameObject prefab;
-    public tileType type;
-    public int x;
-    public int y;
 }
+

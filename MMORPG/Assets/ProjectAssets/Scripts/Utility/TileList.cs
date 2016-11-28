@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class TileList : MonoBehaviour {
 
-    public List<GameObject> map_Tiles = new List<GameObject>();
+    public List<GameObject> mapTiles = new List<GameObject>();
 }
