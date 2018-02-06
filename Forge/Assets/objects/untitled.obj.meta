@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 46278ebabe9f5e5489dc398968a94638
-timeCreated: 1515175475
-licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -10,6 +8,7 @@ ModelImporter:
     400000: untitled
     400002: //RootNode
     2100000: palette
+    2100002: untitledMat
     2300000: untitled
     3300000: untitled
     4300000: untitled
@@ -32,6 +31,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5

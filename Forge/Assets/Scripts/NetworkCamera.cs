@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NetworkCamera : MonoBehaviour 
+public class NetworkCamera : MonoBehaviour
 {
 	public float sensivity;
 	public float defaultHeight;
@@ -17,19 +17,13 @@ public class NetworkCamera : MonoBehaviour
 	public float camSpeed;
 	public float currentHeight;
 	public float camOffsetZ;
-	public GameObject plCam;	
 
-	// protected override void NetworkStart()
-	// {
-	// 	base.NetworkStart();
+	// test
+	public Vector3 _LocalRotation;
 
-	// 	if (!networkObject.IsOwner)
-    //     {
-	// 		return;
-	// 	}
+	public GameObject plCam;
 
-	// 	CreateCamera();
-	// }	
+	bool rotatingAround;
 
 	void Start()
 	{
@@ -38,11 +32,11 @@ public class NetworkCamera : MonoBehaviour
 
 	private void CreateCamera()
 	{
-		
+
 		plCam = new GameObject("plCam");
 		plCam.AddComponent<Camera>();
-		plCam.transform.Translate(0,defaultHeight,0);
-		plCam.transform.Rotate(90,0,0); 
+		plCam.transform.Translate(0, defaultHeight, 0);
+		plCam.transform.Rotate(90, 0, 0);
 	}
 
 	private void LMB_click()
@@ -64,30 +58,27 @@ public class NetworkCamera : MonoBehaviour
 			}
 	}
 
-	private void FixedUpdate() 
+	private void FixedUpdate()
 	{
-
-		// move camera to player object
-		float step = camSpeed * Time.deltaTime;
-		Vector3 moveVector = new Vector3(transform.position.x, plCam.transform.position.y, transform.position.z-camOffsetZ);
-        plCam.transform.position = Vector3.MoveTowards(plCam.transform.position, moveVector, step);
-		plCam.transform.LookAt(transform);
-
 		// click to move and rotate
 		if (Input.GetMouseButton(0))
 		{
 			LMB_click();
-		}	
+		}
 
+		float step = camSpeed;
+		Vector3 moveVector = new Vector3(transform.position.x, plCam.transform.position.y, transform.position.z);
+		plCam.transform.position = Vector3.MoveTowards(plCam.transform.position, moveVector, step);
+		//plCam.transform.LookAt(transform);
 
 		// rotate camera when hold RMB
-		if(Input.GetMouseButton(1))
+		if (Input.GetMouseButton(1))
 		{
 			plCam.transform.RotateAround (transform.position, new Vector3(0,Input.GetAxis("Mouse X") * 10,0), 3);
-		}	
+		}
 
 		// camera zoom in
-        if (Input.GetAxis("Mouse ScrollWheel") < 0f ) 
+		if (Input.GetAxis("Mouse ScrollWheel") < 0f ) 
 		{
 			if (plCam.transform.localPosition.y > minCamHeight)
 			{
@@ -95,6 +86,7 @@ public class NetworkCamera : MonoBehaviour
 				currentHeight = plCam.transform.position.y;
 			}
 		}
+		
 
 		// camera zoom out
 		if (Input.GetAxis("Mouse ScrollWheel") > 0f ) 
@@ -105,5 +97,7 @@ public class NetworkCamera : MonoBehaviour
 				currentHeight = plCam.transform.position.y;
 			}
 		}
-	}
+	} 
+	
 }
+
