@@ -215,7 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4055887851275932}
   - component: {fileID: 95840641747188750}
-  - component: {fileID: 111788984535100404}
+  - component: {fileID: 114826238279202200}
   m_Layer: 0
   m_Name: plModel
   m_TagString: Untagged
@@ -1176,7 +1176,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 5a943685146784f48a2ab3a4e424c702, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1218,23 +1218,6 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!111 &111788984535100404
-Animation:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1397303185192578}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 7f7f2453aafd27645b64288276847ce1, type: 3}
-  m_Animations:
-  - {fileID: 7400000, guid: 7f7f2453aafd27645b64288276847ce1, type: 3}
-  - {fileID: 7400000, guid: 4277ddf1aa94137499452d0e6220b608, type: 3}
-  - {fileID: 7400000, guid: 381c36a1ddf71534aaf54d5acbbfc739, type: 3}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!114 &114340167678280306
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1247,9 +1230,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensivity: 10
-  defaultHeight: 25
-  minCamHeight: 7
-  maxCamHeight: 30
+  defaultHeight: 15
+  minCamHeight: 10
+  maxCamHeight: 20
   zoomSensivity: 30
   camSpeed: 8
   currentHeight: 0
@@ -1268,7 +1251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  speed: 10
+  speed: 5
   gravity: 100
   plModel: {fileID: 1397303185192578}
   movePoint: {x: 0, y: 0, z: 0}
@@ -1284,6 +1267,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plModel: {fileID: 1397303185192578}
+--- !u!114 &114826238279202200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1397303185192578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b1551bfa55073649b590fe6d86d2d6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimator: {fileID: 0}
 --- !u!137 &137050373253459486
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

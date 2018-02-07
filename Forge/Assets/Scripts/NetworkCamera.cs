@@ -17,6 +17,7 @@ public class NetworkCamera : MonoBehaviour
 	public float camSpeed;
 	public float currentHeight;
 	public float camOffsetZ;
+	public Vector3 offset;
 
 	// test
 	public Vector3 _LocalRotation;
@@ -36,7 +37,9 @@ public class NetworkCamera : MonoBehaviour
 		plCam = new GameObject("plCam");
 		plCam.AddComponent<Camera>();
 		plCam.transform.Translate(0, defaultHeight, 0);
-		plCam.transform.Rotate(90, 0, 0);
+		plCam.transform.Rotate(45, 0, 0);
+		plCam.transform.LookAt(transform);
+		offset = plCam.transform.position - transform.position;
 	}
 
 	private void LMB_click()
@@ -58,6 +61,16 @@ public class NetworkCamera : MonoBehaviour
 			}
 	}
 
+	private void LateUpdate()
+	{
+		float step = camSpeed * Time.deltaTime;
+		Vector3 moveVector = new Vector3(transform.position.x, plCam.transform.position.y, transform.position.z);
+		plCam.transform.position = Vector3.MoveTowards(plCam.transform.position, moveVector, step);
+
+		//plCam.transform.position = transform.position + offset;
+		//plCam.transform.LookAt(transform);
+	}
+
 	private void FixedUpdate()
 	{
 		// click to move and rotate
@@ -65,17 +78,21 @@ public class NetworkCamera : MonoBehaviour
 		{
 			LMB_click();
 		}
-
-		float step = camSpeed;
-		Vector3 moveVector = new Vector3(transform.position.x, plCam.transform.position.y, transform.position.z);
-		plCam.transform.position = Vector3.MoveTowards(plCam.transform.position, moveVector, step);
-		//plCam.transform.LookAt(transform);
+		
 
 		// rotate camera when hold RMB
 		if (Input.GetMouseButton(1))
 		{
-			plCam.transform.RotateAround (transform.position, new Vector3(0,Input.GetAxis("Mouse X") * 10,0), 3);
+			if (Input.GetKey(KeyCode.LeftShift))
+			{
+				plCam.transform.position = new Vector3(plCam.transform.position.x, plCam.transform.position.x + Input.GetAxis("Mouse Y"), plCam.transform.position.z);
+			}
+			else
+			{
+				plCam.transform.RotateAround(transform.position, new Vector3(0, Input.GetAxis("Mouse X") * 10, 0), 3);
+			}			
 		}
+		
 
 		// camera zoom in
 		if (Input.GetAxis("Mouse ScrollWheel") < 0f ) 

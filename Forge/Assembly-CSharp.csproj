@@ -88,6 +88,7 @@
      <Compile Include="Assets\Bearded Man Studios Inc\Scripts\Server Browser\ServerBrowser.cs" />
      <Compile Include="Assets\Bearded Man Studios Inc\Scripts\Server Browser\ServerBrowserItem.cs" />
      <Compile Include="Assets\Bearded Man Studios Inc\Scripts\UnityObjectMapper.cs" />
+     <Compile Include="Assets\Scripts\AnimationController.cs" />
      <Compile Include="Assets\Scripts\Controller.cs" />
      <Compile Include="Assets\Scripts\ExitBtn.cs" />
      <Compile Include="Assets\Scripts\GameLogic.cs" />

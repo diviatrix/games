@@ -8,10 +8,12 @@ using UnityEngine;
 public class Player : PlayerBehavior 
 {	
 	public GameObject plModel;
+	public Animator playerAnimator;
 
 	protected override void NetworkStart()
     {
         base.NetworkStart();
+		playerAnimator = plModel.GetComponent<Animator>();
 
         if (!networkObject.IsOwner)
         {
@@ -32,9 +34,7 @@ public class Player : PlayerBehavior
         {
             //setup the disconnected event
             NetworkManager.Instance.Networker.disconnected += DisconnectedFromServer;
-        }
-
-        
+        }       
 
     }
 
@@ -50,7 +50,9 @@ public class Player : PlayerBehavior
 			transform.position = networkObject.position;
 			transform.rotation = networkObject.rotation;
             plModel.transform.rotation = networkObject.modelRotation;
-			
+			playerAnimator.SetBool("isMoving", networkObject.isMoving);
+			playerAnimator.SetBool("isAttacking", networkObject.isAttacking);
+
 			// leave from update, if not owner
 			return;
 		}
@@ -59,6 +61,8 @@ public class Player : PlayerBehavior
 		networkObject.position = transform.position;
 		networkObject.rotation = transform.rotation;
         networkObject.modelRotation = plModel.transform.rotation;
+		networkObject.isMoving = playerAnimator.GetBool("isMoving");
+		networkObject.isAttacking = playerAnimator.GetBool("isAttacking");
 		//networkObject.velocity = rb.velocity;		
 	}
 
@@ -85,4 +89,9 @@ public class Player : PlayerBehavior
             NetworkManager.Instance.Disconnect();
         });
     }
+
+	private void OnApplicationQuit()
+	{
+		NetWorker.EndSession();		
+	}
 }

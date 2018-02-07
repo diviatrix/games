@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeardedManStudios.Forge.Networking.Generated
 {
-	[GeneratedInterpol("{\"inter\":[0.15,0.15,0.15,0.15]")]
+	[GeneratedInterpol("{\"inter\":[0.15,0.15,0.15,0.15,0,0]")]
 	public partial class PlayerNetworkObject : NetworkObject
 	{
 		public const int IDENTITY = 6;
@@ -135,6 +135,66 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			if (modelRotationChanged != null) modelRotationChanged(_modelRotation, timestep);
 			if (fieldAltered != null) fieldAltered("modelRotation", _modelRotation, timestep);
 		}
+		private bool _isMoving;
+		public event FieldEvent<bool> isMovingChanged;
+		public Interpolated<bool> isMovingInterpolation = new Interpolated<bool>() { LerpT = 0f, Enabled = false };
+		public bool isMoving
+		{
+			get { return _isMoving; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_isMoving == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[0] |= 0x10;
+				_isMoving = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetisMovingDirty()
+		{
+			_dirtyFields[0] |= 0x10;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_isMoving(ulong timestep)
+		{
+			if (isMovingChanged != null) isMovingChanged(_isMoving, timestep);
+			if (fieldAltered != null) fieldAltered("isMoving", _isMoving, timestep);
+		}
+		private bool _isAttacking;
+		public event FieldEvent<bool> isAttackingChanged;
+		public Interpolated<bool> isAttackingInterpolation = new Interpolated<bool>() { LerpT = 0f, Enabled = false };
+		public bool isAttacking
+		{
+			get { return _isAttacking; }
+			set
+			{
+				// Don't do anything if the value is the same
+				if (_isAttacking == value)
+					return;
+
+				// Mark the field as dirty for the network to transmit
+				_dirtyFields[0] |= 0x20;
+				_isAttacking = value;
+				hasDirtyFields = true;
+			}
+		}
+
+		public void SetisAttackingDirty()
+		{
+			_dirtyFields[0] |= 0x20;
+			hasDirtyFields = true;
+		}
+
+		private void RunChange_isAttacking(ulong timestep)
+		{
+			if (isAttackingChanged != null) isAttackingChanged(_isAttacking, timestep);
+			if (fieldAltered != null) fieldAltered("isAttacking", _isAttacking, timestep);
+		}
 
 		protected override void OwnershipChanged()
 		{
@@ -148,6 +208,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			rotationInterpolation.current = rotationInterpolation.target;
 			velocityInterpolation.current = velocityInterpolation.target;
 			modelRotationInterpolation.current = modelRotationInterpolation.target;
+			isMovingInterpolation.current = isMovingInterpolation.target;
+			isAttackingInterpolation.current = isAttackingInterpolation.target;
 		}
 
 		public override int UniqueIdentity { get { return IDENTITY; } }
@@ -158,6 +220,8 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			UnityObjectMapper.Instance.MapBytes(data, _rotation);
 			UnityObjectMapper.Instance.MapBytes(data, _velocity);
 			UnityObjectMapper.Instance.MapBytes(data, _modelRotation);
+			UnityObjectMapper.Instance.MapBytes(data, _isMoving);
+			UnityObjectMapper.Instance.MapBytes(data, _isAttacking);
 
 			return data;
 		}
@@ -180,6 +244,14 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			modelRotationInterpolation.current = _modelRotation;
 			modelRotationInterpolation.target = _modelRotation;
 			RunChange_modelRotation(timestep);
+			_isMoving = UnityObjectMapper.Instance.Map<bool>(payload);
+			isMovingInterpolation.current = _isMoving;
+			isMovingInterpolation.target = _isMoving;
+			RunChange_isMoving(timestep);
+			_isAttacking = UnityObjectMapper.Instance.Map<bool>(payload);
+			isAttackingInterpolation.current = _isAttacking;
+			isAttackingInterpolation.target = _isAttacking;
+			RunChange_isAttacking(timestep);
 		}
 
 		protected override BMSByte SerializeDirtyFields()
@@ -195,6 +267,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _velocity);
 			if ((0x8 & _dirtyFields[0]) != 0)
 				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _modelRotation);
+			if ((0x10 & _dirtyFields[0]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _isMoving);
+			if ((0x20 & _dirtyFields[0]) != 0)
+				UnityObjectMapper.Instance.MapBytes(dirtyFieldsData, _isAttacking);
 
 			// Reset all the dirty fields
 			for (int i = 0; i < _dirtyFields.Length; i++)
@@ -263,6 +339,32 @@ namespace BeardedManStudios.Forge.Networking.Generated
 					RunChange_modelRotation(timestep);
 				}
 			}
+			if ((0x10 & readDirtyFlags[0]) != 0)
+			{
+				if (isMovingInterpolation.Enabled)
+				{
+					isMovingInterpolation.target = UnityObjectMapper.Instance.Map<bool>(data);
+					isMovingInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_isMoving = UnityObjectMapper.Instance.Map<bool>(data);
+					RunChange_isMoving(timestep);
+				}
+			}
+			if ((0x20 & readDirtyFlags[0]) != 0)
+			{
+				if (isAttackingInterpolation.Enabled)
+				{
+					isAttackingInterpolation.target = UnityObjectMapper.Instance.Map<bool>(data);
+					isAttackingInterpolation.Timestep = timestep;
+				}
+				else
+				{
+					_isAttacking = UnityObjectMapper.Instance.Map<bool>(data);
+					RunChange_isAttacking(timestep);
+				}
+			}
 		}
 
 		public override void InterpolateUpdate()
@@ -289,6 +391,16 @@ namespace BeardedManStudios.Forge.Networking.Generated
 			{
 				_modelRotation = (Quaternion)modelRotationInterpolation.Interpolate();
 				//RunChange_modelRotation(modelRotationInterpolation.Timestep);
+			}
+			if (isMovingInterpolation.Enabled && !isMovingInterpolation.current.UnityNear(isMovingInterpolation.target, 0.0015f))
+			{
+				_isMoving = (bool)isMovingInterpolation.Interpolate();
+				//RunChange_isMoving(isMovingInterpolation.Timestep);
+			}
+			if (isAttackingInterpolation.Enabled && !isAttackingInterpolation.current.UnityNear(isAttackingInterpolation.target, 0.0015f))
+			{
+				_isAttacking = (bool)isAttackingInterpolation.Interpolate();
+				//RunChange_isAttacking(isAttackingInterpolation.Timestep);
 			}
 		}
 
