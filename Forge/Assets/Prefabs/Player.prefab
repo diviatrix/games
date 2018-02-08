@@ -1231,12 +1231,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensivity: 10
   defaultHeight: 15
-  minCamHeight: 10
+  minCamHeight: 5
   maxCamHeight: 20
   zoomSensivity: 30
-  camSpeed: 8
+  camSpeed: 5
   currentHeight: 0
-  camOffsetZ: 3
+  camOffsetZ: 1
+  offset: {x: 0, y: 0, z: 0}
   _LocalRotation: {x: 0, y: 0, z: 0}
   plCam: {fileID: 0}
 --- !u!114 &114558309192135694
@@ -1251,6 +1252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  playerAnimator: {fileID: 0}
   speed: 5
   gravity: 100
   plModel: {fileID: 1397303185192578}
@@ -1267,6 +1269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plModel: {fileID: 1397303185192578}
+  playerAnimator: {fileID: 0}
 --- !u!114 &114826238279202200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1278,7 +1281,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b1551bfa55073649b590fe6d86d2d6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAnimator: {fileID: 0}
 --- !u!137 &137050373253459486
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

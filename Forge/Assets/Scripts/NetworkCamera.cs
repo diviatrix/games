@@ -36,7 +36,7 @@ public class NetworkCamera : MonoBehaviour
 
 		plCam = new GameObject("plCam");
 		plCam.AddComponent<Camera>();
-		plCam.transform.Translate(0, defaultHeight, 0);
+		plCam.transform.Translate(defaultHeight/2, defaultHeight, defaultHeight/2);
 		plCam.transform.Rotate(45, 0, 0);
 		plCam.transform.LookAt(transform);
 		offset = plCam.transform.position - transform.position;
@@ -63,12 +63,14 @@ public class NetworkCamera : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		float step = camSpeed * Time.deltaTime;
-		Vector3 moveVector = new Vector3(transform.position.x, plCam.transform.position.y, transform.position.z);
-		plCam.transform.position = Vector3.MoveTowards(plCam.transform.position, moveVector, step);
+		//float step = camSpeed * Time.deltaTime;
+		plCam.transform.position = transform.position + offset;
+		plCam.transform.LookAt(transform);
 
+		//Vector3 moveVector = new Vector3(transform.position.x, plCam.transform.position.y, transform.position.z);
+		//plCam.transform.position = Vector3.MoveTowards(plCam.transform.position, moveVector, step);
 		//plCam.transform.position = transform.position + offset;
-		//plCam.transform.LookAt(transform);
+
 	}
 
 	private void FixedUpdate()
@@ -83,37 +85,19 @@ public class NetworkCamera : MonoBehaviour
 		// rotate camera when hold RMB
 		if (Input.GetMouseButton(1))
 		{
-			if (Input.GetKey(KeyCode.LeftShift))
-			{
-				plCam.transform.position = new Vector3(plCam.transform.position.x, plCam.transform.position.x + Input.GetAxis("Mouse Y"), plCam.transform.position.z);
-			}
-			else
-			{
-				plCam.transform.RotateAround(transform.position, new Vector3(0, Input.GetAxis("Mouse X") * 10, 0), 3);
-			}			
+			//plCam.transform.Rotate(transform.position, Input.GetAxis("Mouse Y")*sensivity, Space.Self);
+			offset += Vector3.right;		
 		}
-		
 
-		// camera zoom in
-		if (Input.GetAxis("Mouse ScrollWheel") < 0f ) 
+		if (offset.y >= minCamHeight && Input.GetAxis("Mouse ScrollWheel") < 0)
 		{
-			if (plCam.transform.localPosition.y > minCamHeight)
-			{
-				plCam.transform.Translate(new Vector3(0,0,Input.GetAxis("Mouse ScrollWheel")*-zoomSensivity));
-				currentHeight = plCam.transform.position.y;
-			}
+			offset += new Vector3(0, Input.GetAxis("Mouse ScrollWheel") * zoomSensivity, 0);
 		}
-		
+		else if (offset.y <= maxCamHeight && Input.GetAxis("Mouse ScrollWheel") > 0)
+		{
+			offset += new Vector3(0, Input.GetAxis("Mouse ScrollWheel") * zoomSensivity, 0);
+		}
 
-		// camera zoom out
-		if (Input.GetAxis("Mouse ScrollWheel") > 0f ) 
-		{
-			if (plCam.transform.localPosition.y < maxCamHeight)
-			{
-				plCam.transform.Translate(new Vector3(0,0,Input.GetAxis("Mouse ScrollWheel")*-zoomSensivity));
-				currentHeight = plCam.transform.position.y;
-			}
-		}
 	} 
 	
 }

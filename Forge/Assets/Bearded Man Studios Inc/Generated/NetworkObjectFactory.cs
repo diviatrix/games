@@ -47,6 +47,10 @@ namespace BeardedManStudios.Forge.Networking.Generated
 						availableCallback = true;
 						obj = new PlayerNetworkObject(networker, id, frame);
 						break;
+					case NPCNetworkObject.IDENTITY:
+						availableCallback = true;
+						obj = new NPCNetworkObject(networker, id, frame);
+						break;
 				}
 
 				if (!availableCallback)
